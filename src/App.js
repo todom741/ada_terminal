@@ -26,6 +26,7 @@ const App = () => {
   const inputRef = useRef(null);
   const contractAddress = 'BsyJvHG7UxTJmBaBy45pMLWx9ZyDTkvSeN3rwpYVpump';
   const shortenedAddress = `${contractAddress.slice(0, 4)}...${contractAddress.slice(-4)}`;
+  const isInitialMigrationLoad = useRef(true); // Flag to track initial new_migrations load
 
   // Scroll to bottom of output when updated
   useEffect(() => {
@@ -74,6 +75,10 @@ const App = () => {
     const unsubscribeMigrations = onChildAdded(
       migrationsRef,
       (snapshot) => {
+        if (isInitialMigrationLoad.current) {
+          // Skip processing existing migrations on initial load
+          return;
+        }
         const migration = snapshot.val();
         if (migration) {
           const cleanName = String(migration.mint).replace(/"/g, '');
@@ -90,7 +95,16 @@ const App = () => {
         setOutputLines(prev => [...prev, errorLine]);
       }
     );
-    return () => unsubscribeMigrations();
+
+    // After the first render, set the flag to false to allow new migrations
+    const timer = setTimeout(() => {
+      isInitialMigrationLoad.current = false;
+    }, 0);
+
+    return () => {
+      unsubscribeMigrations();
+      clearTimeout(timer);
+    };
   }, []);
 
   // Convert outputLines to string for rendering
@@ -144,12 +158,24 @@ const App = () => {
             if (!line) return null;
             const parts = line.split('] ', 2);
             if (parts.length === 2) {
-              return (
-                <div key={index} className="output-line">
-                  <span className="timestamp">{parts[0]}]</span>
-                  <span className="message">{parts[1]}</span>
-                </div>
-              );
+              const messageParts = parts[1].split(': ', 2);
+              if (messageParts.length === 2) {
+                const typeClass = messageParts[0] === '[NEW MIGRATION]' ? 'migration-type' : 'type-label';
+                return (
+                  <div key={index} className="output-line">
+                    <span className="timestamp">{parts[0]}]</span>
+                    <span className={typeClass}>{messageParts[0]}:</span>
+                    <span className="content">{messageParts[1]}</span>
+                  </div>
+                );
+              } else {
+                return (
+                  <div key={index} className="output-line">
+                    <span className="timestamp">{parts[0]}]</span>
+                    <span className="message">{parts[1]}</span>
+                  </div>
+                );
+              }
             } else {
               return <div key={index}>{line}</div>;
             }

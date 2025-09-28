@@ -1,5 +1,4 @@
 /* App.css */
-
 /* Header Styles for Token Info and Follow Button */
 .app-container {
   display: flex;
@@ -9,27 +8,43 @@
 
 .timestamp {
   color: #FFD700; /* Gold color */
-  font-size: 16px; /* Larger font size for timestamp */
+  font-size: 20px; /* Larger font size for timestamp */
 }
 
 /* Style for the message in terminal output */
 .message {
-  font-size: 16px; /* Larger font size for message */
+  font-size: 20px; /* Larger font size for message */
 }
 
 /* Style for the output line container */
 .output-line {
-  font-size: 16px; /* Larger font size for output line */
+  font-size: 20px; /* Larger font size for output line */
 }
 
 /* Style for the terminal output container and its direct children */
 .terminal-output {
-  font-size: 16px; /* Larger font size for all text */
+  font-size: 20px; /* Larger font size for all text */
 }
 
 /* Ensure direct div children of terminal-output also inherit larger font size */
 .terminal-output > div {
-  font-size: 16px;
+  font-size: 20px;
+}
+
+/* Style for [NEW MIGRATION] label */
+.migration-type {
+  color: #00FF00; /* Bright green for [NEW MIGRATION] */
+  font-size: 20px;
+}
+
+/* Style for other type labels like [NEW] */
+.type-label {
+  font-size: 20px;
+}
+
+/* Style for the content after the type label */
+.content {
+  font-size: 20px;
 }
 
 .token-header {
@@ -44,20 +59,23 @@
   background-position: center center;
   font-family: 'Arial', sans-serif; /* Clean font for header */
   border-bottom: 1px solid #333; /* Subtle separator from terminal */
+  width: 100%; /* Ensure full width */
+  box-sizing: border-box; /* Include padding in width */
 }
 
 .token-details {
   display: flex;
   justify-content: space-between; /* Spread elements: left for contract-address-wrapper, right for follow-section */
   align-items: center; /* Vertically center items */
-  width: 100%; /* Full width for alignment */
-  max-width: 900px; /* Width to spread elements slightly */
-  margin: 0 auto; /* Center the container */
+  width: 90%; /* Constrain width */
+  max-width: 900px; /* Max width for larger screens */
+  margin: 0 auto; /* Center horizontally */
   gap: 20px; /* Space between elements */
   border: 2px solid #fff; /* White border around token details */
   background-color: rgba(0, 0, 255, 0.2); /* Transparent blue background */
   padding: 10px; /* Padding inside the border for better spacing */
   border-radius: 8px; /* Slight rounding for a polished look */
+  box-sizing: border-box; /* Include border and padding in width */
 }
 
 .contract-address-wrapper {
@@ -72,9 +90,8 @@
   font-size: 1.1em;
   margin: 0;
   opacity: 0.8;
-  color: #fff;
-  text-align: left; /* Left-align ticker */
   color: yellow;
+  text-align: left; /* Left-align ticker */
   font-weight: 400;
 }
 
@@ -258,7 +275,7 @@ input {
 }
 
 /* Mobile-specific styles */
-@media (max-width: 600px) {
+@media (max-width: 430px) {
   .app-container {
     height: 100dvh; /* Ensure full height on mobile */
   }
@@ -278,13 +295,15 @@ input {
   .token-details {
     flex-direction: column; /* Stack elements vertically on mobile */
     gap: 8px;
-    width: 100%; /* Full width on mobile */
-    max-width: none; /* Remove max-width on mobile for full width */
-    border: 2px solid #fff; /* White border around token details */
+    width: 95%; /* Tighter width for mobile */
+    max-width: 100%; /* Prevent overflow */
+    border: 2px solid #fff; /* White border */
     background-color: rgba(0, 0, 255, 0.2); /* Transparent blue background */
     padding: 8px; /* Reduced padding for mobile */
-    border-radius: 8px; /* Slight rounding for a polished look */
+    border-radius: 8px; /* Slight rounding */
     align-items: center; /* Vertically center items on mobile */
+    margin: 0 auto; /* Center horizontally */
+    box-sizing: border-box; /* Include border and padding in width */
   }
 
   .contract-address-wrapper {
@@ -359,6 +378,15 @@ input {
     border-bottom-left-radius: 8px; /* Round bottom-left corner, match header */
     border-bottom-right-radius: 8px; /* Round bottom-right corner, match header */
     box-sizing: border-box; /* Ensure padding doesn't affect width */
+  }
+
+  .timestamp,
+  .message,
+  .output-line,
+  .migration-type,
+  .type-label,
+  .content {
+    font-size: 16px; /* Match mobile font size for consistency */
   }
 
   .terminal-input {
