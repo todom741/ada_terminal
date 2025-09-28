@@ -1,0 +1,420 @@
+/* App.css */
+
+/* Header Styles for Token Info and Follow Button */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh; /* Full dynamic height */
+}
+
+.timestamp {
+  color: #FFD700; /* Gold color */
+  font-size: 16px; /* Larger font size for timestamp */
+}
+
+/* Style for the message in terminal output */
+.message {
+  font-size: 16px; /* Larger font size for message */
+}
+
+/* Style for the output line container */
+.output-line {
+  font-size: 16px; /* Larger font size for output line */
+}
+
+/* Style for the terminal output container and its direct children */
+.terminal-output {
+  font-size: 16px; /* Larger font size for all text */
+}
+
+/* Ensure direct div children of terminal-output also inherit larger font size */
+.terminal-output > div {
+  font-size: 16px;
+}
+
+.token-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Vertically center content within 15vh */
+  padding: 20px;
+  height: 15vh;
+  background-image: url('../src/banner.jpeg');
+  background-size: cover;
+  background-position: center center;
+  font-family: 'Arial', sans-serif; /* Clean font for header */
+  border-bottom: 1px solid #333; /* Subtle separator from terminal */
+}
+
+.token-details {
+  display: flex;
+  justify-content: space-between; /* Spread elements: left for contract-address-wrapper, right for follow-section */
+  align-items: center; /* Vertically center items */
+  width: 100%; /* Full width for alignment */
+  max-width: 900px; /* Width to spread elements slightly */
+  margin: 0 auto; /* Center the container */
+  gap: 20px; /* Space between elements */
+  border: 2px solid #fff; /* White border around token details */
+  background-color: rgba(0, 0, 255, 0.2); /* Transparent blue background */
+  padding: 10px; /* Padding inside the border for better spacing */
+  border-radius: 8px; /* Slight rounding for a polished look */
+}
+
+.contract-address-wrapper {
+  display: flex;
+  align-items: center; /* Vertically center CA and button */
+  justify-content: flex-start; /* Left-align CA and button */
+  gap: 8px; /* Space between ticker, CA, and copy button */
+  padding: 8px 12px; /* Maintain padding for consistency */
+}
+
+.token-ticker {
+  font-size: 1.1em;
+  margin: 0;
+  opacity: 0.8;
+  color: #fff;
+  text-align: left; /* Left-align ticker */
+  color: yellow;
+  font-weight: 400;
+}
+
+.contract-address {
+  font-size: 1.1em;
+  margin: 0;
+  opacity: 0.8;
+  color: #fff;
+  font-family: 'SF Mono', Menlo, Monaco, 'Courier New', Courier, monospace; /* Monospace for CA */
+}
+
+.copy-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  background-color: transparent; /* Transparent background */
+  color: #fff;
+  border: none; /* Remove border */
+  border-radius: 4px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: opacity 0.3s ease; /* Subtle hover effect */
+  width: 24px; /* Compact size for icon */
+  height: 24px;
+}
+
+.copy-button:hover {
+  opacity: 0.7; /* Reduce opacity on hover for visibility */
+}
+
+.follow-section {
+  display: flex;
+  align-items: center; /* Vertically center the follow button */
+  justify-content: flex-end; /* Right-align button */
+}
+
+.btn-follow {
+  padding: 10px 20px;
+  background-color: #1DA1F2; /* X/Twitter blue */
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  font-size: 1em;
+}
+
+.btn-follow:hover {
+  background-color: #0d8bd9; /* Darker blue on hover */
+}
+
+/* Terminal Styles */
+.terminal {
+  display: flex;
+  flex-direction: column;
+  width: 75vw; /* 75% of viewport width for non-mobile */
+  max-width: 75vw; /* Ensure width doesn't exceed 75% */
+  margin: 20px auto 0; /* Add top margin, center horizontally */
+  background: none; /* No background */
+  color: #ffffff; /* White text */
+  font-family: 'SF Mono', Menlo, Monaco, 'Courier New', Courier, monospace;
+  font-size: 14px;
+  padding: 0; /* No padding */
+  box-sizing: border-box;
+  border-radius: 0; /* No border radius on container */
+  overflow: hidden; /* Ensure child border-radius is respected */
+  height: 70vh; /* Fixed height to avoid touching bottom */
+}
+
+.header {
+  flex: 0 0 32px; /* Fixed height matching h-8 */
+  padding: 6px 16px; /* Match terminal-output's 1rem padding */
+  background: #374151; /* Solid darker gray like the example */
+  border-top-left-radius: 10px; /* Match terminal's top-left corner */
+  border-top-right-radius: 10px; /* Match terminal's top-right corner */
+  display: flex;
+  align-items: center;
+  box-sizing: border-box; /* Ensure padding is included in width */
+  width: 75vw; /* Match terminal width */
+  max-width: 75vw; /* Match terminal max-width */
+  margin: 0 auto; /* Center header */
+}
+
+.traffic-lights {
+  display: flex;
+  gap: 6px; /* Closer spacing for macOS accuracy */
+  margin-left: 8px;
+}
+
+.traffic-light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ef4444; /* Red like the example */
+}
+
+.traffic-light.yellow {
+  background-color: #eab308; /* Yellow like the example */
+}
+
+.traffic-light.green {
+  background-color: #22c55e; /* Green like the example */
+}
+
+.header h1 {
+  flex: 1;
+  text-align: center;
+  margin: 0;
+  font-size: 0.875rem; /* Smaller, like text-sm */
+  color: #d1d5db; /* Grayish title text like the example */
+  font-weight: bold; /* Make "ADA Terminal" bold */
+  font-family: 'SF Pro Text', 'Arial', sans-serif; /* macOS font approximation */
+}
+
+.header h2 {
+  display: none; /* Hide h2 as macOS Terminal doesn't use a subtitle in the title bar */
+}
+
+.terminal-output {
+  flex: 1; /* Take remaining space */
+  overflow-y: auto; /* Scrollable output */
+  white-space: pre-wrap; /* Preserve newlines and wrap text */
+  word-wrap: break-word; /* Break long words */
+  padding: 1rem; /* Padding like p-4 */
+  background: #000000; /* Black background like the example */
+  border: none; /* Remove border for seamless look */
+  margin: 0 auto; /* Center output */
+  width: 75vw; /* Match terminal width */
+  max-width: 75vw; /* Match terminal max-width */
+  color: #ffffff; /* White text as requested */
+  font-size: 0.875rem; /* text-sm */
+  border-bottom-left-radius: 10px; /* Round bottom-left corner */
+  border-bottom-right-radius: 10px; /* Round bottom-right corner */
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+.terminal-input {
+  flex: 0 0 auto; /* Fixed size, no grow */
+  display: flex;
+  align-items: center;
+  padding: 8px 10px; /* Consistent padding */
+  background: transparent; /* Match terminal background */
+  width: 75vw; /* Match terminal width */
+  max-width: 75vw; /* Match terminal max-width */
+  margin: 0 auto; /* Center input */
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+.prompt {
+  margin-right: 8px;
+  color: #00ff00; /* Bright green prompt, macOS style */
+  user-select: none; /* Prevent prompt text selection */
+  white-space: nowrap; /* Prevent prompt from wrapping */
+}
+
+input {
+  flex: 1; /* Take remaining width */
+  background: transparent; /* Seamless with terminal background */
+  border: none;
+  color: #ffffff;
+  font-family: 'SF Mono', Menlo, Monaco, 'Courier New', Courier, monospace;
+  font-size: 14px;
+  outline: none;
+  caret-color: #ffffff; /* White cursor */
+  padding: 4px; /* Added padding for touch usability */
+}
+
+/* Scrollbar styling for macOS look */
+.terminal-output::-webkit-scrollbar {
+  width: 8px; /* Thinner scrollbar for mobile */
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.terminal-output::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 600px) {
+  .app-container {
+    height: 100dvh; /* Ensure full height on mobile */
+  }
+
+  .token-header {
+    padding: 15px;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center; /* Center all text on mobile */
+    justify-content: center; /* Vertically center content on mobile */
+  }
+
+  .token-name {
+    font-size: 2em; /* Slightly smaller on mobile */
+  }
+
+  .token-details {
+    flex-direction: column; /* Stack elements vertically on mobile */
+    gap: 8px;
+    width: 100%; /* Full width on mobile */
+    max-width: none; /* Remove max-width on mobile for full width */
+    border: 2px solid #fff; /* White border around token details */
+    background-color: rgba(0, 0, 255, 0.2); /* Transparent blue background */
+    padding: 8px; /* Reduced padding for mobile */
+    border-radius: 8px; /* Slight rounding for a polished look */
+    align-items: center; /* Vertically center items on mobile */
+  }
+
+  .contract-address-wrapper {
+    flex-direction: row; /* Keep ticker, CA, and button horizontal */
+    align-items: center; /* Vertically center CA and button */
+    justify-content: center; /* Center on mobile */
+    gap: 6px;
+    padding: 6px 10px; /* Slightly reduced padding for mobile */
+  }
+
+  .token-ticker,
+  .contract-address {
+    font-size: 1em;
+    text-align: center; /* Center on mobile */
+  }
+
+  .copy-button {
+    padding: 4px;
+    font-size: 0.8em;
+    width: 20px; /* Smaller size for mobile */
+    height: 20px;
+  }
+
+  .follow-section {
+    justify-content: center; /* Center button on mobile */
+  }
+
+  .btn-follow {
+    padding: 8px 16px;
+    font-size: 0.9em;
+  }
+
+  .terminal {
+    font-size: 11px; /* Smaller font for mobile */
+    padding: 0; /* No padding */
+    margin: 10px auto 0; /* Smaller top margin, center horizontally */
+    border-radius: 0; /* No border radius */
+    max-width: calc(100vw - 10px); /* Ensure full width minus margin */
+    width: calc(100vw - 10px); /* Full width for mobile */
+    background: none; /* No background */
+    height: 70vh; /* Fixed height to avoid touching bottom */
+    overflow: hidden; /* Ensure child border-radius is respected */
+  }
+
+  .header {
+    flex: 0 0 22px; /* Adjusted height for mobile */
+    padding: 4px 1rem; /* Match terminal-output's 1rem padding */
+    background: #374151; /* Solid darker gray like the example */
+    border-top-left-radius: 8px; /* Match terminal's top-left corner */
+    border-top-right-radius: 8px; /* Match terminal's top-right corner */
+    display: flex;
+    align-items: center;
+    box-sizing: border-box; /* Ensure padding is included in width */
+    width: calc(100vw - 10px); /* Match terminal-output width */
+    max-width: calc(100vw - 10px); /* Match terminal max-width */
+    margin: 0 auto; /* Center header */
+  }
+
+  .header h1 {
+    font-size: 16px; /* Smaller title font */
+    font-weight: bold; /* Make "ADA Terminal" bold */
+  }
+
+  .terminal-output {
+    padding: 1rem;
+    font-size: 0.875rem; /* Adjusted for consistency */
+    margin: 0 auto; /* Center output */
+    width: calc(100vw - 10px); /* Match terminal width */
+    max-width: calc(100vw - 10px); /* Match terminal max-width */
+    color: #ffffff; /* White text as requested */
+    background: #000000; /* Black background like the example */
+    border-bottom-left-radius: 8px; /* Round bottom-left corner, match header */
+    border-bottom-right-radius: 8px; /* Round bottom-right corner, match header */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+  }
+
+  .terminal-input {
+    padding: 6px 8px; /* Adjust padding for input area */
+    width: calc(100vw - 10px); /* Match terminal width */
+    max-width: calc(100vw - 10px); /* Match terminal max-width */
+    margin: 0 auto; /* Center input */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    background: transparent; /* Ensure no background interferes with rounding */
+  }
+
+  input {
+    font-size: 11px; /* Smaller font for input */
+    padding: 6px 2px; /* Increased padding for touch targets */
+  }
+
+  .prompt {
+    font-size: 11px; /* Smaller prompt font */
+  }
+
+  .traffic-light {
+    width: 8px; /* Smaller traffic lights */
+    height: 8px;
+  }
+
+  .terminal-output::-webkit-scrollbar {
+    width: 6px; /* Even thinner scrollbar */
+  }
+
+  .terminal-output::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+  }
+}
+
+/* Ensure the page doesn't zoom out on mobile */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100dvh; /* Use dynamic viewport height */
+  overflow: hidden; /* Prevent body scrolling */
+  background: #343536; /* Set body background color */
+}
+
+/* Improve touch input handling */
+input[type="text"] {
+  -webkit-appearance: none; /* Remove default browser styling */
+  touch-action: manipulation; /* Improve touch responsiveness */
+}
+
+/* Ensure viewport meta for mobile scaling */
+@-webkit-viewport {
+  width: device-width;
+}
+@-moz-viewport {
+  width: device-width;
+}
+@viewport {
+  width: device-width;
+}
