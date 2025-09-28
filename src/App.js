@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, onChildAdded } from 'firebase/database';
+import { getDatabase, ref, onChildAdded, off, get } from 'firebase/database';
 import { FaCopy } from 'react-icons/fa';
 
 // Firebase configuration
@@ -26,7 +26,8 @@ const App = () => {
   const inputRef = useRef(null);
   const contractAddress = 'BsyJvHG7UxTJmBaBy45pMLWx9ZyDTkvSeN3rwpYVpump';
   const shortenedAddress = `${contractAddress.slice(0, 4)}...${contractAddress.slice(-4)}`;
-  const isInitialMigrationLoad = useRef(true); // Flag to track initial new_migrations load
+  const [outputLines, setOutputLines] = useState([]);
+  const isInitialLoad = useRef({ coins: true, migrations: true }); // Track initial loads for both
 
   // Scroll to bottom of output when updated
   useEffect(() => {
@@ -42,68 +43,85 @@ const App = () => {
     }
   }, []);
 
-  const [outputLines, setOutputLines] = useState([]);
-
   // Listener for new_coins
   useEffect(() => {
     const coinsRef = ref(database, 'new_coins/');
-    const unsubscribeCoins = onChildAdded(
-      coinsRef,
-      (snapshot) => {
-        const coin = snapshot.val();
-        if (coin) {
-          const cleanName = String(coin.name).replace(/"/g, '');
-          const timestamp = coin.time; // Assuming time is stored in HH:MM format
-          const newLine = `[${timestamp}] [NEW]: ${cleanName}`;
-          // Append new line, preserving existing timestamps in outputLines
-          setOutputLines(prev => [...prev, newLine]);
-        }
-      },
-      (error) => {
-        const currentTimestamp = new Date().toISOString().slice(11, 16); // HH:mm format
-        const errorLine = `[${currentTimestamp}] Error fetching new_coins data: ${error.message}`;
-        // Append error line, preserving existing timestamps
-        setOutputLines(prev => [...prev, errorLine]);
+    const handleChildAdded = (snapshot) => {
+      if (isInitialLoad.current.coins) {
+        return; // Skip processing existing coins on initial load
       }
-    );
-    return () => unsubscribeCoins();
+      const coin = snapshot.val();
+      if (coin) {
+        const cleanName = String(coin.name).replace(/"/g, '');
+        const timestamp = coin.time; // Assuming time is stored in HH:MM format
+        const newLine = `[${timestamp}] [NEW]: ${cleanName}`;
+        setOutputLines(prev => [...prev, newLine]);
+      }
+    };
+
+    const handleError = (error) => {
+      const currentTimestamp = new Date().toISOString().slice(11, 16); // HH:mm format
+      const errorLine = `[${currentTimestamp}] Error fetching new_coins data: ${error.message}`;
+      setOutputLines(prev => [...prev, errorLine]);
+    };
+
+    // Attach listener
+    onChildAdded(coinsRef, handleChildAdded, handleError);
+
+    // Skip initial data
+    get(coinsRef)
+      .then(() => {
+        isInitialLoad.current.coins = false;
+      })
+      .catch((error) => {
+        const currentTimestamp = new Date().toISOString().slice(11, 16);
+        setOutputLines(prev => [...prev, `[${currentTimestamp}] Error on initial new_coins fetch: ${error.message}`]);
+      });
+
+    // Cleanup listener on unmount
+    return () => {
+      off(coinsRef, 'child_added', handleChildAdded);
+    };
   }, []);
 
   // Listener for new_migrations
   useEffect(() => {
     const migrationsRef = ref(database, 'new_migrations/');
-    const unsubscribeMigrations = onChildAdded(
-      migrationsRef,
-      (snapshot) => {
-        if (isInitialMigrationLoad.current) {
-          // Skip processing existing migrations on initial load
-          return;
-        }
-        const migration = snapshot.val();
-        if (migration) {
-          const cleanName = String(migration.mint).replace(/"/g, '');
-          const timestamp = migration.time; // Assuming time is stored in HH:MM format
-          const newLine = `[${timestamp}] [NEW MIGRATION]: ${cleanName}`;
-          // Append new line, preserving existing timestamps in outputLines
-          setOutputLines(prev => [...prev, newLine]);
-        }
-      },
-      (error) => {
-        const currentTimestamp = new Date().toISOString().slice(11, 16); // HH:mm format
-        const errorLine = `[${currentTimestamp}] Error fetching new_migrations data: ${error.message}`;
-        // Append error line, preserving existing timestamps
-        setOutputLines(prev => [...prev, errorLine]);
+    const handleChildAdded = (snapshot) => {
+      if (isInitialLoad.current.migrations) {
+        return; // Skip processing existing migrations on initial load
       }
-    );
+      const migration = snapshot.val();
+      if (migration) {
+        const cleanName = String(migration.mint).replace(/"/g, '');
+        const timestamp = migration.time; // Assuming time is stored in HH:MM format
+        const newLine = `[${timestamp}] [NEW MIGRATION]: ${cleanName}`;
+        setOutputLines(prev => [...prev, newLine]);
+      }
+    };
 
-    // After the first render, set the flag to false to allow new migrations
-    const timer = setTimeout(() => {
-      isInitialMigrationLoad.current = false;
-    }, 0);
+    const handleError = (error) => {
+      const currentTimestamp = new Date().toISOString().slice(11, 16); // HH:mm format
+      const errorLine = `[${currentTimestamp}] Error fetching new_migrations data: ${error.message}`;
+      setOutputLines(prev => [...prev, errorLine]);
+    };
 
+    // Attach listener
+    onChildAdded(migrationsRef, handleChildAdded, handleError);
+
+    // Skip initial data
+    get(migrationsRef)
+      .then(() => {
+        isInitialLoad.current.migrations = false;
+      })
+      .catch((error) => {
+        const currentTimestamp = new Date().toISOString().slice(11, 16);
+        setOutputLines(prev => [...prev, `[${currentTimestamp}] Error on initial new_migrations fetch: ${error.message}`]);
+      });
+
+    // Cleanup listener on unmount
     return () => {
-      unsubscribeMigrations();
-      clearTimeout(timer);
+      off(migrationsRef, 'child_added', handleChildAdded);
     };
   }, []);
 
@@ -143,6 +161,7 @@ const App = () => {
           </div>
         </div>
       </header>
+
       {/* Terminal */}
       <div className="terminal">
         <div className="header">
