@@ -101,7 +101,7 @@ const App = () => {
       if (migration) {
         const cleanName = String(migration.mint).replace(/"/g, '');
         const timestamp = migration.time; // Assuming time is stored in HH:MM format
-        const newLine = `[${timestamp}] [NEW MIGRATION]: ${cleanName}`;
+        const newLine = `[${timestamp}] [MIGRATING]: ${cleanName}`;
         setOutputLines(prev => [...prev, newLine]);
       }
     };
