@@ -29,6 +29,12 @@ const App = () => {
   const [outputLines, setOutputLines] = useState([]);
   const isInitialLoad = useRef({ coins: true, migrations: true }); // Track initial loads for both
 
+  // Initialize output with "Connecting to endpoint..." on mount
+  useEffect(() => {
+    const currentTimestamp = new Date().toISOString().slice(11, 16); // HH:mm format
+    setOutputLines([`[${currentTimestamp}] Connecting to endpoint...`]);
+  }, []);
+
   // Scroll to bottom of output when updated
   useEffect(() => {
     if (outputRef.current) {
@@ -54,7 +60,7 @@ const App = () => {
       if (coin) {
         const cleanName = String(coin.name).replace(/"/g, '');
         const timestamp = coin.time; // Assuming time is stored in HH:MM format
-        const newLine = `[${timestamp}] [NEW]: ${cleanName}`;
+        const newLine = `[${timestamp}] [NEW]:  ${cleanName}`;
         setOutputLines(prev => [...prev, newLine]);
       }
     };
